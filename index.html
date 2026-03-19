@@ -9,13 +9,13 @@
 <title>Awareness</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4f0;color:#1a1a18;padding:2rem 1.25rem 3rem;}
+body{font-family:Georgia,'Times New Roman',serif;background:#f5f4f0;color:#1a1a18;padding:2rem 1.25rem 3rem;}
 @media(prefers-color-scheme:dark){body{background:#1a1a18;color:#f0efe9;}}
 .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2.25rem;}
 .greeting{font-size:22px;font-weight:400;letter-spacing:-.3px;}
-.date{font-size:12px;color:#aaa;margin-top:5px;}
+.date{font-size:12px;color:#aaa;margin-top:5px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
 .week-tog{display:flex;gap:6px;margin-top:4px;}
-.tog{border:1px solid #ddd;background:transparent;color:#aaa;border-radius:20px;padding:5px 14px;font-size:12px;cursor:pointer;}
+.tog{border:1px solid #ddd;background:transparent;color:#aaa;border-radius:20px;padding:5px 14px;font-size:12px;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
 .tog.on{background:#1a1a18;color:#f0efe9;border-color:#1a1a18;}
 @media(prefers-color-scheme:dark){.tog{border-color:#3a3a38;color:#666;}.tog.on{background:#f0efe9;color:#1a1a18;border-color:#f0efe9;}}
 .ring-section{display:flex;flex-direction:column;align-items:center;margin-bottom:2.5rem;}
@@ -23,10 +23,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .ring-wrap svg{transform:rotate(-90deg);}
 .ring-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
 .ring-pct{font-size:26px;font-weight:400;letter-spacing:-.5px;}
-.ring-sub{font-size:10px;color:#aaa;margin-top:2px;letter-spacing:.04em;text-transform:uppercase;}
+.ring-sub{font-size:10px;color:#aaa;margin-top:2px;letter-spacing:.04em;text-transform:uppercase;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
 .summary-line{font-size:15px;text-align:center;font-weight:400;}
-.summary-muted{font-size:12px;color:#aaa;text-align:center;margin-top:6px;line-height:1.6;max-width:260px;}
-.sec{font-size:10px;font-weight:500;color:#bbb;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;}
+.summary-muted{font-size:12px;color:#aaa;text-align:center;margin-top:6px;line-height:1.6;max-width:260px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
+.sec{font-size:10px;font-weight:500;color:#bbb;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
 .dots-row{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:2.25rem;}
 .dot-item{display:flex;align-items:center;gap:8px;border:1px solid #e8e7e2;border-radius:24px;padding:8px 14px 8px 10px;cursor:pointer;user-select:none;-webkit-user-select:none;}
 .dot-item:active{transform:scale(.96);}
@@ -34,20 +34,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .dot-item.done{background:#f0efe8;}
 @media(prefers-color-scheme:dark){.dot-item.done{background:#222220;}}
 .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
-.dot-label{font-size:13px;}
-.dot-count{font-size:11px;color:#bbb;margin-left:1px;}
+.dot-label{font-size:13px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
+.dot-count{font-size:11px;color:#bbb;margin-left:1px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
 .limits-col{display:flex;flex-direction:column;gap:10px;}
 .lim-row{display:flex;align-items:center;gap:12px;border:1px solid #e8e7e2;border-radius:24px;padding:8px 14px;cursor:pointer;user-select:none;-webkit-user-select:none;}
 .lim-row:active{transform:scale(.98);}
 @media(prefers-color-scheme:dark){.lim-row{border-color:#2e2e2c;}}
 .lim-row.over{border-color:#E24B4A;}
-.lim-name{font-size:13px;width:90px;flex-shrink:0;}
+.lim-name{font-size:13px;width:90px;flex-shrink:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
 .lim-bar-wrap{flex:1;height:3px;background:#eee;border-radius:2px;}
 @media(prefers-color-scheme:dark){.lim-bar-wrap{background:#2e2e2c;}}
 .lim-bar{height:100%;border-radius:2px;transition:width .3s;}
-.lim-nums{font-size:11px;width:36px;text-align:right;flex-shrink:0;}
-.hint{font-size:11px;color:#ccc;text-align:center;margin-top:1.5rem;}
-.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a18;color:#f0efe9;padding:8px 18px;border-radius:20px;font-size:12px;opacity:0;transition:all .2s;pointer-events:none;white-space:nowrap;}
+.lim-nums{font-size:11px;width:36px;text-align:right;flex-shrink:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
+.hint{font-size:11px;color:#ccc;text-align:center;margin-top:1.5rem;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a18;color:#f0efe9;padding:8px 18px;border-radius:20px;font-size:12px;opacity:0;transition:all .2s;pointer-events:none;white-space:nowrap;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
 @media(prefers-color-scheme:dark){.toast{background:#f0efe9;color:#1a1a18;}}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
@@ -55,7 +55,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <body>
 <div class="top">
   <div>
-    <div class="greeting">Hey Steven</div>
+    <div class="greeting">Awareness</div>
     <div class="date" id="dateLabel"></div>
   </div>
   <div class="week-tog">
@@ -112,9 +112,9 @@ var ML=[
 ];
 var view="week";
 var counts={};
-function sk(id){return view+"_"+id;}
-function gc(id){return counts[sk(id)]||0;}
-function sc(id,v){counts[sk(id)]=Math.max(0,v);try{localStorage.setItem(sk(id),Math.max(0,v));}catch(e){}}
+function sk(id,v){return (v||view)+"_"+id;}
+function gc(id,v){return counts[sk(id,v)]||0;}
+function sc(id,val,v){var k=sk(id,v||view);counts[k]=Math.max(0,val);try{localStorage.setItem(k,Math.max(0,val));}catch(e){}}
 function sv(v){
   view=v;
   document.getElementById("bw").className="tog"+(v==="week"?" on":"");
@@ -123,8 +123,8 @@ function sv(v){
 }
 var tt;
 function showToast(msg){var el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){el.classList.remove("show");},1600);}
-function addOne(id){sc(id,gc(id)+1);showToast("+1 "+id);render();}
-function subOne(id){var c=gc(id);if(c>0){sc(id,c-1);showToast("-1 "+id);render();}}
+function addOne(id){sc(id,gc(id,"week")+1,"week");sc(id,gc(id,"month")+1,"month");showToast("+1 "+id);render();}
+function subOne(id){var wc=gc(id,"week");var mc=gc(id,"month");if(wc>0)sc(id,wc-1,"week");if(mc>0)sc(id,mc-1,"month");showToast("-1 "+id);render();}
 function makeTappable(el,id){
   var holdTimer,didHold=false;
   el.addEventListener("touchstart",function(){didHold=false;holdTimer=setTimeout(function(){didHold=true;subOne(id);if(navigator.vibrate)navigator.vibrate(30);},500);},{passive:true});
