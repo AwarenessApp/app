@@ -46,6 +46,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 @media(prefers-color-scheme:dark){.lim-bar-wrap{background:#2e2e2c;}}
 .lim-bar{height:100%;border-radius:2px;transition:width .3s;}
 .lim-nums{font-size:11px;width:36px;text-align:right;flex-shrink:0;}
+.hint{font-size:11px;color:#ccc;text-align:center;margin-top:1.5rem;}
 .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a18;color:#f0efe9;padding:8px 18px;border-radius:20px;font-size:12px;opacity:0;transition:all .2s;pointer-events:none;white-space:nowrap;}
 @media(prefers-color-scheme:dark){.toast{background:#f0efe9;color:#1a1a18;}}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
@@ -58,8 +59,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="date" id="dateLabel"></div>
   </div>
   <div class="week-tog">
-    <button class="tog on" onclick="sv('week')">Week</button>
-    <button class="tog" onclick="sv('month')">Month</button>
+    <button class="tog on" id="bw" onclick="sv('week')">Week</button>
+    <button class="tog" id="bm" onclick="sv('month')">Month</button>
   </div>
 </div>
 <div class="ring-section">
@@ -80,6 +81,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="dots-row" id="dotsRow"></div>
 <div class="sec">Limits</div>
 <div class="limits-col" id="limitsCol"></div>
+<div class="hint">tap to add &nbsp;·&nbsp; hold to subtract</div>
 <div class="toast" id="toast"></div>
 <script>
 var WT=[
@@ -112,12 +114,26 @@ var view="week";
 var counts={};
 function sk(id){return view+"_"+id;}
 function gc(id){return counts[sk(id)]||0;}
-function sc(id,v){counts[sk(id)]=v;try{localStorage.setItem(sk(id),v);}catch(e){}}
-function sv(v){view=v;document.getElementById("bw").className="tog"+(v==="week"?" on":"");document.getElementById("bm").className="tog"+(v==="month"?" on":"");render();}
-function tapT(id,n){var c=gc(id);if(c<Math.ceil(n)){sc(id,c+1);toast("+1 "+id);}else{sc(id,0);toast(id+" reset");}render();}
-function tapL(id,n,soft){var c=gc(id);if(!soft&&c>=n+4){sc(id,0);toast(id+" reset");}else{sc(id,c+1);toast("+1 "+id+(c+1>n?" — noted":""));}render();}
+function sc(id,v){counts[sk(id)]=Math.max(0,v);try{localStorage.setItem(sk(id),Math.max(0,v));}catch(e){}}
+function sv(v){
+  view=v;
+  document.getElementById("bw").className="tog"+(v==="week"?" on":"");
+  document.getElementById("bm").className="tog"+(v==="month"?" on":"");
+  render();
+}
 var tt;
-function toast(msg){var el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){el.classList.remove("show");},1600);}
+function showToast(msg){var el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){el.classList.remove("show");},1600);}
+function addOne(id){sc(id,gc(id)+1);showToast("+1 "+id);render();}
+function subOne(id){var c=gc(id);if(c>0){sc(id,c-1);showToast("-1 "+id);render();}}
+function makeTappable(el,id){
+  var holdTimer,didHold=false;
+  el.addEventListener("touchstart",function(){didHold=false;holdTimer=setTimeout(function(){didHold=true;subOne(id);if(navigator.vibrate)navigator.vibrate(30);},500);},{passive:true});
+  el.addEventListener("touchend",function(){clearTimeout(holdTimer);if(!didHold)addOne(id);},{passive:true});
+  el.addEventListener("touchmove",function(){clearTimeout(holdTimer);},{passive:true});
+  el.addEventListener("mousedown",function(){didHold=false;holdTimer=setTimeout(function(){didHold=true;subOne(id);},500);});
+  el.addEventListener("mouseup",function(){clearTimeout(holdTimer);if(!didHold)addOne(id);});
+  el.addEventListener("mouseleave",function(){clearTimeout(holdTimer);});
+}
 function dateLabel(){var n=new Date();if(view==="week"){var day=n.getDay();var m=new Date(n);m.setDate(n.getDate()-(day===0?6:day-1));var s=new Date(m);s.setDate(m.getDate()+6);var f=function(d){return d.toLocaleDateString("en-US",{month:"short",day:"numeric"});};return f(m)+" - "+f(s);}return n.toLocaleDateString("en-US",{month:"long",year:"numeric"});}
 function render(){
   document.getElementById("dateLabel").textContent=dateLabel();
@@ -133,16 +149,12 @@ function render(){
   var behind=[];T.forEach(function(t){if(gc(t.id)<t.n)behind.push(t.label);});
   document.getElementById("summaryMuted").textContent=behind.length?"Still building: "+behind.join(", "):"Everything on track this "+view+".";
   var dr=document.getElementById("dotsRow");dr.innerHTML="";
-  T.forEach(function(t){var c=gc(t.id);var done=c>=t.n;var d=document.createElement("div");d.className="dot-item"+(done?" done":"");d.innerHTML="<div class='dot' style='background:"+(done?t.color:"#ddd")+"'></div><span class='dot-label'>"+t.label+"</span><span class='dot-count'>"+c+"/"+Math.ceil(t.n)+"</span>";d.onclick=(function(a,b){return function(){tapT(a,b);};})(t.id,t.n);dr.appendChild(d);});
+  T.forEach(function(t){var c=gc(t.id);var done=c>=t.n;var d=document.createElement("div");d.className="dot-item"+(done?" done":"");d.innerHTML="<div class='dot' style='background:"+(done?t.color:"#ddd")+"'></div><span class='dot-label'>"+t.label+"</span><span class='dot-count'>"+c+"/"+Math.ceil(t.n)+"</span>";makeTappable(d,t.id);dr.appendChild(d);});
   var lc=document.getElementById("limitsCol");lc.innerHTML="";
-  L.forEach(function(l){var c=gc(l.id);var over=c>l.n;var pctL=Math.min(100,Math.round((c/l.n)*100));var bc=over?"#E24B4A":pctL>75?"#EF9F27":"#ccc";var d=document.createElement("div");d.className="lim-row"+(over?" over":"");d.innerHTML="<div class='lim-name'>"+l.label+"</div><div class='lim-bar-wrap'><div class='lim-bar' style='width:"+pctL+"%;background:"+bc+"'></div></div><div class='lim-nums' style='color:"+(over?"#E24B4A":"#bbb")+"'>"+c+"/"+l.n+"</div>";d.onclick=(function(a,b,s){return function(){tapL(a,b,s);};})(l.id,l.n,l.soft);lc.appendChild(d);});
+  L.forEach(function(l){var c=gc(l.id);var over=c>l.n;var pctL=Math.min(100,Math.round((c/l.n)*100));var bc=over?"#E24B4A":pctL>75?"#EF9F27":"#ccc";var d=document.createElement("div");d.className="lim-row"+(over?" over":"");d.innerHTML="<div class='lim-name'>"+l.label+"</div><div class='lim-bar-wrap'><div class='lim-bar' style='width:"+pctL+"%;background:"+bc+"'></div></div><div class='lim-nums' style='color:"+(over?"#E24B4A":"#bbb")+"'>"+c+"/"+l.n+"</div>";makeTappable(d,l.id);lc.appendChild(d);});
 }
 try{var all=WT.concat(WL).concat(MT).concat(ML);all.forEach(function(i){["week","month"].forEach(function(v){var k=v+"_"+i.id;var s=localStorage.getItem(k);if(s)counts[k]=parseInt(s);});});}catch(e){}
 render();
-document.getElementById("bw").id="bw";
-document.getElementById("bm").id="bm";
 </script>
-<button class="tog on" id="bw" style="display:none"></button>
-<button class="tog" id="bm" style="display:none"></button>
 </body>
 </html>
